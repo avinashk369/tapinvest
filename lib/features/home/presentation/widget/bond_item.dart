@@ -1,9 +1,15 @@
 part of '../pages/home_screen.dart';
 
 class BondItem extends StatelessWidget {
-  const BondItem({super.key, required this.bondsModel, required this.onTap});
+  const BondItem({
+    super.key,
+    required this.bondsModel,
+    required this.onTap,
+    this.searchText,
+  });
   final BondsModel bondsModel;
   final VoidCallback onTap;
+  final String? searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -22,30 +28,18 @@ class BondItem extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4.8),
           child: Center(child: ImageHolder(imageUrl: bondsModel.logo ?? '')),
         ),
-        title: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: (bondsModel.isin ?? "").substring(
-                  0,
-                  ((bondsModel.isin?.length ?? 0) - 4),
-                ),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              TextSpan(
-                text: (bondsModel.isin ?? "").substring(
-                  ((bondsModel.isin?.length ?? 0) - 4),
-                ),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                ),
-              ),
-            ],
+        title: HighlightedText(
+          text: (bondsModel.isin ?? ""),
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
           ),
+          highlightStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+          query: searchText ?? '',
+          highlightBackgroundColor: AppColors.brown.withValues(alpha: 0.2),
         ),
         subtitle: Row(
           spacing: 5,
@@ -66,12 +60,18 @@ class BondItem extends StatelessWidget {
               child: SizedBox(height: 3, width: 3),
             ),
             Expanded(
-              child: Text(
-                bondsModel.companyName ?? "",
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              child: HighlightedText(
+                text: bondsModel.companyName ?? "",
+                query: searchText ?? '',
+                highlightStyle: Theme.of(context).textTheme.bodyMedium!
+                    .copyWith(fontWeight: FontWeight.w400, fontSize: 10),
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w400,
                   fontSize: 10,
                   color: AppColors.subtitleColor,
+                ),
+                highlightBackgroundColor: AppColors.brown.withValues(
+                  alpha: 0.2,
                 ),
               ),
             ),

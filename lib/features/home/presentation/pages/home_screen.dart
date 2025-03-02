@@ -10,6 +10,7 @@ import 'package:tapinvest/features/home/presentation/bloc/home_bloc.dart';
 import 'package:tapinvest/routes/route_const.dart';
 import 'package:tapinvest/utils/debouncer.dart';
 import 'package:tapinvest/widgets/custom_input.dart';
+import 'package:tapinvest/widgets/highlighted_text.dart';
 import 'package:tapinvest/widgets/image_holder.dart';
 import 'package:tapinvest/widgets/loader_widget.dart';
 part '../widget/search_widget.dart';
@@ -116,7 +117,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           loading: (_) => const LoaderWidget(),
                           loaded:
                               (state) => BondsList(
-                                bonds: state.bonds,
+                                bonds: state.filterBonds,
+                                searchText: textEditingController.text,
                                 onTap:
                                     () => Navigator.of(
                                       context,

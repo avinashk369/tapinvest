@@ -31,7 +31,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       /// emit bonds loaded state with data
 
-      emit(BondsLoaded(bonds: bonds));
+      emit(BondsLoaded(bonds: bonds, filterBonds: bonds));
     } on ServerError catch (error) {
       emit(HomeError(error: error.errorMessage));
     } catch (e) {
@@ -48,18 +48,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (state is! BondsLoaded) {
         return;
       }
+      final allBonds = state.bonds;
 
       if (event.search.isEmpty) {
-        emit(state.copyWith(bonds: state.bonds));
+        emit(state.copyWith(bonds: allBonds, filterBonds: allBonds));
         return;
       }
-      print(
-        "bonds length ${state.bonds.length} and search text ${event.search}",
-      );
+
       // Filter bonds based on the search query
-      final List<BondsModel> copyBonds = List.from(state.bonds);
+
       final List<BondsModel> filteredBonds =
-          copyBonds
+          allBonds
               .where(
                 (bond) =>
                     (bond.isin?.toLowerCase().contains(
@@ -74,7 +73,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               .toList();
 
       // Emit the new state with filtered bonds
-      emit(state.copyWith(bonds: filteredBonds));
+      emit(state.copyWith(bonds: allBonds, filterBonds: filteredBonds));
     } catch (_) {}
   }
 }

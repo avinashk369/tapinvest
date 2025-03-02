@@ -1,9 +1,15 @@
 part of '../pages/home_screen.dart';
 
 class BondsList extends StatelessWidget {
-  const BondsList({super.key, required this.bonds, required this.onTap});
+  const BondsList({
+    super.key,
+    required this.bonds,
+    required this.onTap,
+    this.searchText,
+  });
   final List<BondsModel> bonds;
   final VoidCallback onTap;
+  final String? searchText;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +24,11 @@ class BondsList extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
         itemBuilder:
-            (_, index) => BondItem(bondsModel: bonds[index], onTap: onTap),
+            (_, index) => BondItem(
+              bondsModel: bonds[index],
+              onTap: onTap,
+              searchText: searchText,
+            ),
         separatorBuilder:
             (_, _) => const Divider(
               endIndent: 16,
