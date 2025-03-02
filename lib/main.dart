@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tapinvest/core/di/app_manager.dart';
+import 'package:tapinvest/core/utils/app_colors.dart';
 import 'package:tapinvest/core/utils/app_const.dart';
 import 'package:tapinvest/routes/route_const.dart';
 import 'package:tapinvest/routes/route_generator.dart';
@@ -22,6 +23,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        scaffoldBackgroundColor: AppColors.bgColor,
+        appBarTheme: AppBarTheme(backgroundColor: AppColors.bgColor),
       ),
       initialRoute: RouteConst.homeRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
