@@ -1,10 +1,20 @@
 part of '../pages/instrument_detail.dart';
 
-class ProsCons extends StatelessWidget {
+class ProsCons extends StatefulWidget {
   const ProsCons({super.key});
 
   @override
+  State<ProsCons> createState() => _ProsConsState();
+}
+
+class _ProsConsState extends State<ProsCons>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ListView(
       padding: EdgeInsets.zero,
       children: [
@@ -46,8 +56,15 @@ class ProsCons extends StatelessWidget {
                 const SizedBox(height: 18),
 
                 BlocBuilder<InstrumentBloc, InstrumentState>(
+                  buildWhen: (previous, current) {
+                    return (current is InstrumentLoading ||
+                            current is InstrumentLoaded) &&
+                        current is! InstrumentCurrentChart;
+                  },
                   builder:
                       (_, state) => state.maybeMap(
+                        currentChart: (value) => Text("Current chart"),
+
                         loaded:
                             (value) => _prosConsItem(
                               context: context,
@@ -71,6 +88,11 @@ class ProsCons extends StatelessWidget {
                 ),
                 const SizedBox(height: 18),
                 BlocBuilder<InstrumentBloc, InstrumentState>(
+                  buildWhen: (previous, current) {
+                    return (current is InstrumentLoading ||
+                            current is InstrumentLoaded) &&
+                        current is! InstrumentCurrentChart;
+                  },
                   builder:
                       (_, state) => state.maybeMap(
                         loaded:

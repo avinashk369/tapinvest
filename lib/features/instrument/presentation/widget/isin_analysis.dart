@@ -1,14 +1,25 @@
 part of '../pages/instrument_detail.dart';
 
-class IsinAnalysis extends StatelessWidget {
+class IsinAnalysis extends StatefulWidget {
   const IsinAnalysis({super.key});
 
   @override
+  State<IsinAnalysis> createState() => _IsinAnalysisState();
+}
+
+class _IsinAnalysisState extends State<IsinAnalysis>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder<InstrumentBloc, InstrumentState>(
-      buildWhen:
-          (previous, current) =>
-              current is InstrumentLoading || current is InstrumentLoaded,
+      buildWhen: (previous, current) {
+        return (current is InstrumentLoading || current is InstrumentLoaded) &&
+            current is! InstrumentCurrentChart;
+      },
       builder:
           (_, state) => state.maybeMap(
             loading: (_) => const LoaderWidget(),
