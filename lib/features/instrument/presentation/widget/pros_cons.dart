@@ -1,20 +1,12 @@
 part of '../pages/instrument_detail.dart';
 
-class ProsCons extends StatefulWidget {
-  const ProsCons({super.key});
-
-  @override
-  State<ProsCons> createState() => _ProsConsState();
-}
-
-class _ProsConsState extends State<ProsCons>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class ProsCons extends StatelessWidget {
+  const ProsCons({super.key, required this.pros, required this.cons});
+  final List<String> pros;
+  final List<String> cons;
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return ListView(
       padding: EdgeInsets.zero,
       children: [
@@ -54,26 +46,7 @@ class _ProsConsState extends State<ProsCons>
                   ),
                 ),
                 const SizedBox(height: 18),
-
-                BlocBuilder<InstrumentBloc, InstrumentState>(
-                  buildWhen: (previous, current) {
-                    return (current is InstrumentLoading ||
-                            current is InstrumentLoaded) &&
-                        current is! InstrumentCurrentChart;
-                  },
-                  builder:
-                      (_, state) => state.maybeMap(
-                        currentChart: (value) => Text("Current chart"),
-
-                        loaded:
-                            (value) => _prosConsItem(
-                              context: context,
-                              info: value.bondDetail.prosAndCons?.pros ?? [],
-                            ),
-                        orElse: () => const SizedBox.shrink(),
-                      ),
-                ),
-
+                _prosConsItem(context: context, info: pros),
                 const SizedBox(height: 28),
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
@@ -87,23 +60,7 @@ class _ProsConsState extends State<ProsCons>
                   ),
                 ),
                 const SizedBox(height: 18),
-                BlocBuilder<InstrumentBloc, InstrumentState>(
-                  buildWhen: (previous, current) {
-                    return (current is InstrumentLoading ||
-                            current is InstrumentLoaded) &&
-                        current is! InstrumentCurrentChart;
-                  },
-                  builder:
-                      (_, state) => state.maybeMap(
-                        loaded:
-                            (value) => _prosConsItem(
-                              context: context,
-                              info: value.bondDetail.prosAndCons?.cons ?? [],
-                              isPros: false,
-                            ),
-                        orElse: () => const SizedBox.shrink(),
-                      ),
-                ),
+                _prosConsItem(context: context, info: cons, isPros: false),
                 const SizedBox(height: 28),
               ],
             ),
@@ -154,7 +111,6 @@ class _ProsConsState extends State<ProsCons>
                 ),
               ),
             ),
-
             Expanded(
               child: Text(
                 title,

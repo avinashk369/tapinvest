@@ -1,6 +1,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tapinvest/core/utils/app_colors.dart';
@@ -26,7 +27,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late TextEditingController textEditingController;
-  final debouncer = Debouncer(delay: 500);
+  final debouncer = Debouncer(delay: 200);
 
   @override
   void initState() {
@@ -119,10 +120,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               (state) => BondsList(
                                 bonds: state.filterBonds,
                                 searchText: textEditingController.text,
-                                onTap:
-                                    () => Navigator.of(
-                                      context,
-                                    ).pushNamed(RouteConst.bondDetail),
+                                onTap: () {
+                                  HapticFeedback.mediumImpact();
+                                  Navigator.of(
+                                    context,
+                                  ).pushNamed(RouteConst.bondDetail);
+                                },
                               ),
                           orElse: () => const SizedBox.shrink(),
                         ),

@@ -4,8 +4,6 @@ import 'package:tapinvest/core/di/injection.dart';
 
 class AppManager {
   static Future<void> init() async {
-    await configureDependencies();
-
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -13,9 +11,12 @@ class AppManager {
         statusBarIconBrightness: Brightness.dark,
       ),
     );
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
+    await Future.wait([
+      configureDependencies(),
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]),
     ]);
   }
 }

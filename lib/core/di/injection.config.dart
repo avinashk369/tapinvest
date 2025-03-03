@@ -32,39 +32,37 @@ import 'package:tapinvest/services/api_client.dart' as _i525;
 import 'package:tapinvest/services/dio_client.dart' as _i1006;
 
 extension GetItInjectableX on _i174.GetIt {
-  // initializes the registration of main-scope dependencies inside of GetIt
+// initializes the registration of main-scope dependencies inside of GetIt
   _i174.GetIt init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
   }) {
-    final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    final gh = _i526.GetItHelper(
+      this,
+      environment,
+      environmentFilter,
+    );
     final dioClient = _$DioClient();
     final appModule = _$AppModule();
     gh.lazySingleton<_i361.Dio>(() => dioClient.dio);
     gh.factory<_i825.InstrumentDetail>(
-      () => _i825.InstrumentDetail(key: gh<_i409.Key>()),
+        () => _i825.InstrumentDetail(key: gh<_i409.Key>()));
+    gh.factory<String>(
+      () => appModule.baseUrl,
+      instanceName: 'baseUrl',
     );
-    gh.factory<String>(() => appModule.baseUrl, instanceName: 'baseUrl');
-    gh.factory<_i525.ApiClient>(
-      () => _i525.ApiClient(
-        gh<_i361.Dio>(),
-        baseUrl: gh<String>(instanceName: 'baseUrl'),
-      ),
-    );
+    gh.factory<_i525.ApiClient>(() => _i525.ApiClient(
+          gh<_i361.Dio>(),
+          baseUrl: gh<String>(instanceName: 'baseUrl'),
+        ));
     gh.factory<_i1052.InstrumentRepository>(
-      () => _i74.InstrumentRepositoryImpl(apiClient: gh<_i525.ApiClient>()),
-    );
+        () => _i74.InstrumentRepositoryImpl(apiClient: gh<_i525.ApiClient>()));
     gh.factory<_i468.HomeRepository>(
-      () => _i153.HomeRepositoryImpl(apiClient: gh<_i525.ApiClient>()),
-    );
-    gh.factory<_i653.InstrumentBloc>(
-      () => _i653.InstrumentBloc(
-        instrumentRepository: gh<_i1052.InstrumentRepository>(),
-      ),
-    );
+        () => _i153.HomeRepositoryImpl(apiClient: gh<_i525.ApiClient>()));
+    gh.factory<_i653.InstrumentBloc>(() => _i653.InstrumentBloc(
+        instrumentRepository: gh<_i1052.InstrumentRepository>()));
     gh.factory<_i789.HomeBloc>(
-      () => _i789.HomeBloc(homeRepository: gh<_i468.HomeRepository>()),
-    );
+        () => _i789.HomeBloc(homeRepository: gh<_i468.HomeRepository>()));
     return this;
   }
 }

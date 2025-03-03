@@ -36,11 +36,17 @@ class ChartWidget extends StatelessWidget {
                       children: [
                         InkWell(
                           splashFactory: NoSplash.splashFactory,
-                          onTap:
-                              () => context.read<InstrumentBloc>().add(
-                                ChangeChart(chartType: ChartType.ebitda),
-                              ),
+                          onTap: () {
+                            HapticFeedback.mediumImpact();
+                            context.read<InstrumentBloc>().add(
+                              ChangeChart(chartType: ChartType.ebitda),
+                            );
+                          },
                           child: BlocBuilder<InstrumentBloc, InstrumentState>(
+                            buildWhen:
+                                (previous, current) =>
+                                    current is InstrumentCurrentChart ||
+                                    current is InstrumentLoaded,
                             builder: (_, state) {
                               return DecoratedBox(
                                 decoration: BoxDecoration(
@@ -81,14 +87,19 @@ class ChartWidget extends StatelessWidget {
                             },
                           ),
                         ),
-
                         InkWell(
                           splashFactory: NoSplash.splashFactory,
-                          onTap:
-                              () => context.read<InstrumentBloc>().add(
-                                ChangeChart(chartType: ChartType.revenue),
-                              ),
+                          onTap: () {
+                            HapticFeedback.mediumImpact();
+                            context.read<InstrumentBloc>().add(
+                              ChangeChart(chartType: ChartType.revenue),
+                            );
+                          },
                           child: BlocBuilder<InstrumentBloc, InstrumentState>(
+                            buildWhen:
+                                (previous, current) =>
+                                    current is InstrumentCurrentChart ||
+                                    current is InstrumentLoaded,
                             builder: (_, state) {
                               return DecoratedBox(
                                 decoration: BoxDecoration(
@@ -139,6 +150,10 @@ class ChartWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: BlocBuilder<InstrumentBloc, InstrumentState>(
+              buildWhen:
+                  (previous, current) =>
+                      current is InstrumentCurrentChart ||
+                      current is InstrumentLoaded,
               builder: (context, state) {
                 return ((state is InstrumentCurrentChart &&
                             state.chartType == ChartType.ebitda) ||

@@ -2,6 +2,7 @@ library;
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -100,6 +101,7 @@ class _InstrumentDetailState extends State<InstrumentDetail>
                 pinned: true,
                 delegate: _SliverAppBarDelegate(
                   TabBar(
+                    enableFeedback: true,
                     controller: _tabController,
                     tabs: [
                       Tab(text: AppConst.isinAnalysis),
@@ -117,15 +119,34 @@ class _InstrumentDetailState extends State<InstrumentDetail>
                         ?.copyWith(fontWeight: FontWeight.w600),
                     indicatorSize: TabBarIndicatorSize.label,
                     indicatorColor: AppColors.arrowColor,
+                    onTap:
+                        (value) => context.read<InstrumentBloc>().add(
+                          ChangeInstrumentTab(tabIndex: value),
+                        ),
                   ),
                 ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 12)),
             ];
           },
-          body: TabBarView(
-            controller: _tabController,
-            children: [IsinAnalysis(), ProsCons()],
+          body: BlocBuilder<InstrumentBloc, InstrumentState>(
+            buildWhen: (previous, current) => current is InstrumentLoaded,
+            builder:
+                (_, state) => state.maybeMap(
+                  loaded: (value) {
+                    return TabBarView(
+                      controller: _tabController,
+                      children: [
+                        IsinAnalysis(bondDetail: value.bondDetail),
+                        ProsCons(
+                          pros: value.bondDetail.prosAndCons?.pros ?? [],
+                          cons: value.bondDetail.prosAndCons?.cons ?? [],
+                        ),
+                      ],
+                    );
+                  },
+                  orElse: () => const SizedBox.shrink(),
+                ),
           ),
         ),
       ),
