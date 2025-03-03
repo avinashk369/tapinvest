@@ -27,6 +27,7 @@ class IssuerDetails extends StatelessWidget {
             child: Row(
               children: [
                 Icon(Icons.verified_user),
+                const SizedBox(width: 8),
                 Text(
                   AppConst.issuerDetail,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(

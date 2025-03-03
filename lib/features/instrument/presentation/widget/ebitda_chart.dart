@@ -30,8 +30,29 @@ class EbitdaChart extends StatelessWidget {
             ),
             topTitles: AxisTitles(
               sideTitles: SideTitles(
-                // showTitles: true,
-                // getTitlesWidget: (value, meta) => Text(meta.formattedValue),
+                showTitles: true,
+                getTitlesWidget: (value, meta) {
+                  String text = "";
+                  if ((meta.formattedValue) == "3") {
+                    text = "2024";
+                  } else if (meta.formattedValue == "4") {
+                    text = " \t\t\t\t\t2025";
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 16, top: 4),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        text,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.subtitleColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  );
+                },
 
                 /// grid value
               ),
@@ -49,12 +70,15 @@ class EbitdaChart extends StatelessWidget {
                   strokeWidth: 1,
                 ),
             drawVerticalLine: true,
-            getDrawingVerticalLine:
-                (value) => FlLine(
-                  color: AppColors.black.withValues(alpha: 0.1),
-                  strokeWidth: 1,
-                  dashArray: [2],
-                ),
+            verticalInterval: 0.33,
+            checkToShowVerticalLine: (value) => value <= (0.33),
+            getDrawingVerticalLine: (value) {
+              return FlLine(
+                color: AppColors.black.withValues(alpha: 0.4),
+                strokeWidth: 1,
+                dashArray: [2],
+              );
+            },
           ),
           borderData: FlBorderData(show: false),
           barGroups:
@@ -75,7 +99,7 @@ class EbitdaChart extends StatelessWidget {
                             BarChartRodStackItem(
                               (dataItem.value ?? 0).toDouble() / 1.5,
                               (dataItem.value ?? 0).toDouble(),
-                              AppColors.barColor,
+                              const Color.fromARGB(255, 161, 188, 245),
                             ),
                           ],
                         ),
@@ -124,7 +148,7 @@ class EbitdaChart extends StatelessWidget {
 
   Widget leftTitles(double value, TitleMeta meta) {
     if (value == meta.max) {
-      return Container();
+      return const SizedBox.shrink();
     }
     const style = TextStyle(fontSize: 10);
     return SideTitleWidget(

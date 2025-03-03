@@ -101,7 +101,6 @@ class _InstrumentDetailState extends State<InstrumentDetail>
                 pinned: true,
                 delegate: _SliverAppBarDelegate(
                   TabBar(
-                    enableFeedback: true,
                     controller: _tabController,
                     tabs: [
                       Tab(text: AppConst.isinAnalysis),
@@ -134,13 +133,14 @@ class _InstrumentDetailState extends State<InstrumentDetail>
             builder:
                 (_, state) => state.maybeMap(
                   loaded: (value) {
+                    final bondDetail = value.bondDetail;
                     return TabBarView(
                       controller: _tabController,
                       children: [
-                        IsinAnalysis(bondDetail: value.bondDetail),
+                        IsinAnalysis(bondDetail: bondDetail),
                         ProsCons(
-                          pros: value.bondDetail.prosAndCons?.pros ?? [],
-                          cons: value.bondDetail.prosAndCons?.cons ?? [],
+                          pros: bondDetail.prosAndCons?.pros ?? [],
+                          cons: bondDetail.prosAndCons?.cons ?? [],
                         ),
                       ],
                     );

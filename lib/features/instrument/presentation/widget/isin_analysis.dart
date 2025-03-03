@@ -39,9 +39,9 @@ class _IsinAnalysisState extends State<IsinAnalysis>
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          IssuerDetails(bondDetail: widget.bondDetail, issuerInfo: infoData),
-          const SizedBox(height: 16),
           ChartWidget(financialsModel: widget.bondDetail.financials),
+          const SizedBox(height: 16),
+          IssuerDetails(bondDetail: widget.bondDetail, issuerInfo: infoData),
           const SizedBox(height: 16),
         ],
       ),
