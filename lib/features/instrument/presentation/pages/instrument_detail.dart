@@ -129,28 +129,15 @@ class _InstrumentDetailState extends State<InstrumentDetail>
             ];
           },
           body: BlocBuilder<InstrumentBloc, InstrumentState>(
-            buildWhen: (previous, current) => current is InstrumentLoaded,
-            builder:
-                (_, state) => state.maybeMap(
-                  loaded: (value) {
-                    final bondDetail = value.bondDetail;
-                    return TabBarView(
-                      controller: _tabController,
-                      children: [
-                        IsinAnalysis(
-                          key: ValueKey("isin-analysis"),
-                          bondDetail: bondDetail,
-                        ),
-                        ProsCons(
-                          key: ValueKey("pros-cons"),
-                          pros: bondDetail.prosAndCons?.pros ?? [],
-                          cons: bondDetail.prosAndCons?.cons ?? [],
-                        ),
-                      ],
-                    );
-                  },
-                  orElse: () => const SizedBox.shrink(),
-                ),
+            builder: (_, state) {
+              return IndexedStack(
+                index: (state is InstrumentCurrentTab) ? state.tabIndex : 0,
+                children: [
+                  const IsinAnalysis(key: ValueKey("isin-analysis")),
+                  const ProsCons(key: ValueKey("pros-cons")),
+                ],
+              );
+            },
           ),
         ),
       ),

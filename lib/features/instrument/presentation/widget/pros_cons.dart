@@ -1,74 +1,93 @@
 part of '../pages/instrument_detail.dart';
 
 class ProsCons extends StatelessWidget {
-  const ProsCons({super.key, required this.pros, required this.cons});
-  final List<String> pros;
-  final List<String> cons;
+  const ProsCons({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColors.borderColor),
-              color: AppColors.white,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    AppConst.prosCons,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+    return BlocBuilder<InstrumentBloc, InstrumentState>(
+      buildWhen: (previous, current) => current is InstrumentLoaded,
+      builder: (context, state) {
+        return state.maybeMap(
+          loaded: (value) {
+            final List<String> pros = value.bondDetail.prosAndCons?.pros ?? [];
+            final List<String> cons = value.bondDetail.prosAndCons?.cons ?? [];
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.borderColor),
+                      color: AppColors.white,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            AppConst.prosCons,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyLarge?.copyWith(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Text(
+                            AppConst.pros,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyLarge?.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.green,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 18),
+                        _prosConsItem(context: context, info: pros),
+                        const SizedBox(height: 28),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Text(
+                            AppConst.cons,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyLarge?.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.brown,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 18),
+                        _prosConsItem(
+                          context: context,
+                          info: cons,
+                          isPros: false,
+                        ),
+                        const SizedBox(height: 28),
+                      ],
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    AppConst.pros,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.green,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 18),
-                _prosConsItem(context: context, info: pros),
-                const SizedBox(height: 28),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    AppConst.cons,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.brown,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 18),
-                _prosConsItem(context: context, info: cons, isPros: false),
-                const SizedBox(height: 28),
-              ],
-            ),
-          ),
-        ],
-      ),
+                ],
+              ),
+            );
+          },
+          orElse: () => SizedBox.fromSize(),
+        );
+      },
     );
   }
 
