@@ -37,6 +37,8 @@ class _IsinAnalysisState extends State<IsinAnalysis>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ListView(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
         children: [
           ChartWidget(financialsModel: widget.bondDetail.financials),

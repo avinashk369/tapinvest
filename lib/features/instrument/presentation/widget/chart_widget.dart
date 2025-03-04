@@ -31,7 +31,7 @@ class ChartWidget extends StatelessWidget {
                     color: Color(0XFFE5E5E5),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(2.0),
                     child: Row(
                       children: [
                         InkWell(

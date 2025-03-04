@@ -7,12 +7,14 @@ class ProsCons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: DecoratedBox(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          DecoratedBox(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: AppColors.borderColor),
@@ -65,8 +67,8 @@ class ProsCons extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

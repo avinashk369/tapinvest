@@ -33,13 +33,13 @@ class EbitdaChart extends StatelessWidget {
                 showTitles: true,
                 getTitlesWidget: (value, meta) {
                   String text = "";
-                  if ((meta.formattedValue) == "3") {
+                  if (value == 2.0) {
                     text = "2024";
-                  } else if (meta.formattedValue == "4") {
+                  } else if (value == 3.0) {
                     text = " \t\t\t\t\t2025";
                   }
                   return Padding(
-                    padding: const EdgeInsets.only(right: 16, top: 4),
+                    padding: const EdgeInsets.only(right: 8, top: 4),
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Text(
@@ -70,8 +70,8 @@ class EbitdaChart extends StatelessWidget {
                   strokeWidth: 1,
                 ),
             drawVerticalLine: true,
-            verticalInterval: 0.33,
-            checkToShowVerticalLine: (value) => value <= (0.33),
+            verticalInterval: 0.26,
+            checkToShowVerticalLine: (value) => value <= (0.26),
             getDrawingVerticalLine: (value) {
               return FlLine(
                 color: AppColors.black.withValues(alpha: 0.4),
@@ -81,6 +81,7 @@ class EbitdaChart extends StatelessWidget {
             },
           ),
           borderData: FlBorderData(show: false),
+          maxY: getMaxY(),
           barGroups:
               ebitdaModel
                   ?.map(
@@ -99,7 +100,7 @@ class EbitdaChart extends StatelessWidget {
                             BarChartRodStackItem(
                               (dataItem.value ?? 0).toDouble() / 1.5,
                               (dataItem.value ?? 0).toDouble(),
-                              const Color.fromARGB(255, 161, 188, 245),
+                              const Color.fromARGB(255, 190, 209, 251),
                             ),
                           ],
                         ),
@@ -110,6 +111,16 @@ class EbitdaChart extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  double getMaxY() {
+    double max = 0.0;
+    for (int i = 0; i < (ebitdaModel ?? []).length - 1; i++) {
+      if ((ebitdaModel![i].value ?? 0) > (ebitdaModel![i + 1].value ?? 0)) {
+        max = (ebitdaModel![i].value ?? 0).toDouble();
+      }
+    }
+    return max * 1.1;
   }
 
   Widget bottomTitles(double value, TitleMeta meta) {

@@ -29,6 +29,15 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: RouteConst.homeRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
+      builder: (context, child) {
+        final scale = MediaQuery.of(
+          context,
+        ).textScaler.clamp(minScaleFactor: 0.8, maxScaleFactor: 1.0);
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: scale),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       debugShowCheckedModeBanner: false,
     );
   }

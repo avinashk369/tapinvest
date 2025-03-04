@@ -103,8 +103,8 @@ class _InstrumentDetailState extends State<InstrumentDetail>
                   TabBar(
                     controller: _tabController,
                     tabs: [
-                      Tab(text: AppConst.isinAnalysis),
-                      Tab(text: AppConst.prosConsTab),
+                      const Tab(text: AppConst.isinAnalysis),
+                      const Tab(text: AppConst.prosConsTab),
                     ],
                     tabAlignment: TabAlignment.start,
                     isScrollable: true,
@@ -137,8 +137,12 @@ class _InstrumentDetailState extends State<InstrumentDetail>
                     return TabBarView(
                       controller: _tabController,
                       children: [
-                        IsinAnalysis(bondDetail: bondDetail),
+                        IsinAnalysis(
+                          key: ValueKey("isin-analysis"),
+                          bondDetail: bondDetail,
+                        ),
                         ProsCons(
+                          key: ValueKey("pros-cons"),
                           pros: bondDetail.prosAndCons?.pros ?? [],
                           cons: bondDetail.prosAndCons?.cons ?? [],
                         ),
@@ -170,7 +174,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    return Container(color: Colors.transparent, child: _tabBar);
+    return Container(color: AppColors.bgColor, child: _tabBar);
   }
 
   @override
